@@ -452,10 +452,22 @@
             }
 
             (function() {
-                _detectDevice();
-                _detectOS();
-                _detectCapabilities();
-                _detectBrowser();
+                var detectAll = function () {
+                    _detectDevice();
+                    _detectOS();
+                    _detectCapabilities();
+                    _detectBrowser();
+                };
+
+                if (!document.body) {
+                    if(typeof window.addEventListener !== 'undefined') {
+                        window.addEventListener('load', detectAll);
+                    } else if(typeof window.attachEvent !== 'undefined') {
+                        window.attachEvent('load', detectAll);
+                    }
+                } else {
+                    detectAll();
+                }
 
                 if(typeof window.addEventListener !== 'undefined') {
                     window.addEventListener('resize', _detectDevice);
